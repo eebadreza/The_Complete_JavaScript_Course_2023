@@ -51,21 +51,24 @@ if (navigator.geolocation)
       map.on('click', function(mapEvent){
         
         // console.log(mapEvent);
-        const {lat, lng} = mapEvent.latlng;
+        // const {lat, lng} = mapEvent.latlng;
+
+        form.classList.remove('hidden');
+        inputDistance.focus();
 
         // console.log(lat, lng);
 
-        L.marker( [lat, lng])
-          .addTo(map)
-          .bindPopup(L.popup({
-            maxWidth: 250,
-            minWidth: 100,
-            autoClose: false,
-            closeOnClick: false,
-            className: 'running-popup'
-          }))
-          .setPopupContent('Workout')
-          .openPopup();
+        // L.marker( [lat, lng])
+        //   .addTo(map)
+        //   .bindPopup(L.popup({
+        //     maxWidth: 250,
+        //     minWidth: 100,
+        //     autoClose: false,
+        //     closeOnClick: false,
+        //     className: 'running-popup'
+        //   }))
+        //   .setPopupContent('Workout')
+        //   .openPopup();
       })
 
     },

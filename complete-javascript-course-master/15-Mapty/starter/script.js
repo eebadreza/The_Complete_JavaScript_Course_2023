@@ -13,36 +13,53 @@ const inputElevation = document.querySelector('.form__input--elevation');
 
 let map, mapEvent;
 
-if (navigator.geolocation)
-  navigator.geolocation.getCurrentPosition(
-    function (pos) {
-      // console.log(pos);
-      const { latitude } = pos.coords;
-      const { longitude } = pos.coords;
-      // console.log(latitude, longitude);
+class App{
 
-      const coords = [ latitude, longitude];
+  #map;
+  #mapEvent;
 
-      map = L.map('map').setView(coords, 13);
+  constructor(){
+    this._getPosition();
+  }
 
-      L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-
-      map.on('click', function(mapE){
-        mapEvent = mapE;
-        // console.log(mapEvent);
-        // const {lat, lng} = mapEvent.latlng;
-        form.classList.remove('hidden');
-        inputDistance.focus();
-      })
-
-    },
-    function () {
-      alert('Could not get your Location');
+  _getPosition(){
+    if (navigator.geolocation)
+    navigator.geolocation.getCurrentPosition( 
+      this._loadMap.bind(this), 
+      function () {
+        alert('Could not get your Location');
+      });
     }
-  );
+
+  _loadMap(pos){
+    const { latitude } = pos.coords;
+    const { longitude } = pos.coords;
+
+    const coords = [ latitude, longitude];
+
+    map = L.#map('map').setView(coords, 20);
+
+    L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(this.#map);
+
+    this.#map.on('click', function(mapE){
+      mapEvent = mapE;
+      form.classList.remove('hidden');
+      inputDistance.focus();
+    })
+  }
+
+  _showForm(){}
+
+  _toggleElevationField(){}
+
+  _newWorkout(){}
+}
+
+const app = new App();
+
 
   // const placeMarker = function(lat, lng){
     form.addEventListener('submit', function(e){

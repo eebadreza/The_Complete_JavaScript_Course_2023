@@ -15,6 +15,7 @@ class Workout{
   date = new Date();
   dateFormatted = this.date.toString().slice(4,10);
   id = (Date.now() + '').slice(-10);
+  clicks = 0;
 
   constructor(coords, distance, duration){
     this.coords = coords;
@@ -23,9 +24,12 @@ class Workout{
   }
 
   _setDescription(){
-
     this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${this.dateFormatted}`;
+  }
 
+  click(){
+    this.clicks++;
+    console.log(this.clicks);
   }
 }
 
@@ -238,14 +242,14 @@ class App{
 
   _moveToPopup(e){
     const workoutEl = e.target.closest('.workout');
-    
     if (!workoutEl) {
       return;
     }
     
-    console.log(workoutEl)
+    // console.log(workoutEl)
     const workoutData = this.#workouts.find(work => work.id === workoutEl.dataset.id);
     // console.log(workoutData)
+    workoutData.click();
 
     this.#map.setView(workoutData.coords, this.#mapZoomLevel, {
       animate: true,
@@ -253,6 +257,8 @@ class App{
         duration: 1
       }
     });
+
+    // console.log(workoutData)
   }
 }
 

@@ -592,11 +592,14 @@ const controlRecipes = async function() {
         await _modelJs.loadRecipe(id);
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
     } catch (e) {
-        alert(e);
+        // alert(e);
+        (0, _recipeViewJsDefault.default).renderError();
     }
 };
-window.addEventListener("hashchange", controlRecipes);
-window.addEventListener("load", controlRecipes);
+const init = function() {
+    (0, _recipeViewJsDefault.default).addHandelerRender(controlRecipes);
+};
+init();
 
 },{"core-js/modules/web.immediate.js":"8tqxB","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./model.js":"Y4A21","./views/recipeView.js":"l60JC"}],"8tqxB":[function(require,module,exports) {
 "use strict";
@@ -2486,8 +2489,8 @@ const loadRecipe = async function(id) {
         };
     // console.log(state.recipe);
     } catch (e) {
-        console.error(e);
-    // throw e;
+        // console.error(e);
+        throw e;
     }
 };
 
@@ -2528,7 +2531,7 @@ const getJSON = async function(url) {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs"}],"l60JC":[function(require,module,exports) {
+},{"./config":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"l60JC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _iconsSvg = require("url:../../img/icons.svg");
@@ -2537,6 +2540,8 @@ var _fractional = require("fractional");
 class RecipeView {
     #parentElement = document.querySelector(".recipe");
     #data;
+    #errMsg = "We could not find that recipe. Please try another one!";
+    #message = "";
     render(data) {
         this.#data = data;
         const markup = this.#generateMarkup(this.data);
@@ -2557,6 +2562,42 @@ class RecipeView {
         this.#parentElement.innerHTML = "";
         this.#parentElement.insertAdjacentHTML("afterbegin", spinner);
     };
+    renderError(message = this.#errMsg) {
+        const markup = `
+        <div class="error">
+            <div>
+              <svg>
+                <use href="${(0, _iconsSvgDefault.default)}#icon-alert-triangle"></use>
+              </svg>
+            </div>
+            <p>${message}</p>
+          </div> 
+        `;
+        this.#clear();
+        this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    renderMessage(message = this.#message) {
+        const markup = `
+        <div class="messag e">
+            <div>
+              <svg>
+                <use href="${(0, _iconsSvgDefault.default)}#icon-smile"></use>
+              </svg>
+            </div>
+            <p>${message}</p>
+          </div> 
+        `;
+        this.#clear();
+        this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    addHandelerRender(handeler) {
+        [
+            "hashchange",
+            "load"
+        ].forEach((el)=>{
+            window.addEventListener(el, handeler);
+        });
+    }
     #generateMarkup() {
         return `
             <figure class="recipe__fig">

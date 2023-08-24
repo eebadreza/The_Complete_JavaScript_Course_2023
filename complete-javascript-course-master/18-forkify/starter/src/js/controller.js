@@ -28,10 +28,14 @@ const controlRecipes = async function(){
   } 
   catch (e) {
 
-    alert(e);
+    // alert(e);
+    recipeView.renderError();
 
   }
-}
+};
 
-window.addEventListener('hashchange', controlRecipes)
-window.addEventListener('load', controlRecipes)
+const init = function () {
+  recipeView.addHandelerRender(controlRecipes);
+} 
+
+init();
